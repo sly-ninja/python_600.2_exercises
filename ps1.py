@@ -61,8 +61,9 @@ def greedy_cow_transport(cows, limit=10):
 
     for i in range(len(cowDictCopy)):
         if (totalWeight + cowDictCopy[i][1] <= limit):
-            result.append(cowDictCopy[i][1])
+            result.append(cowDictCopy[i][0])
             totalWeight += cowDictCopy[i][1]
+
     return result
 
 
