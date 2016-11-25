@@ -86,8 +86,7 @@ class RectangularRoom(object):
 
         pos: a Position
         """
-        x = math.floor(pos.getX())
-        y = math.floor(pos.getY())
+        x, y = math.floor(pos.getX()), math.floor(pos.getY())
 
         if (x, y) not in self.cleanList:
             self.cleanList.append((x, y))
@@ -102,7 +101,7 @@ class RectangularRoom(object):
         n: an integer
         returns: True if (m, n) is cleaned, False otherwise
         """
-        return (m, n) in self.cleanList
+        return (math.floor(m), math.floor(n)) in self.cleanList
     
     def getNumTiles(self):
         """
@@ -126,9 +125,7 @@ class RectangularRoom(object):
 
         returns: a Position object.
         """
-        positionChoices = [(x,y) for x in range(self.width) for y in range(self.height)]
-
-        pos = random.choice(positionChoices)
+        pos = random.choice([(x,y) for x in range(self.width) for y in range(self.height)])
         return Position(pos[0], pos[1])
 
     def isPositionInRoom(self, pos):
@@ -236,7 +233,7 @@ class StandardRobot(Robot):
             self.direction = random.randrange(0, 360)        
 
 # Uncomment this line to see your implementation of StandardRobot in action!
-# testRobotMovement(StandardRobot, RectangularRoom)
+testRobotMovement(StandardRobot, RectangularRoom)
 
 
 # === Problem 4
@@ -258,21 +255,24 @@ def runSimulation(num_robots, speed, width, height, min_coverage, num_trials,
     robot_type: class of robot to be instantiated (e.g. StandardRobot or
                 RandomWalkRobot)
     """
-    room = RectangularRoom(width, height)
-    testRobot = robot_type(room, speed)
-    currentCoverage = 0
-    numTimeStepsList = []
-    for t in range(num_trials):
+    
+    totalTimeList = []
+
+    for number in range(num_trials):
+        room = RectangularRoom(width, height)
         numTimeSteps = 0
-        if min_coverage < currentCoverage:
-            testRobot.updatePositionAndClean()
+
+        while (room.getNumCleanedTiles() / room.getNumTiles()) < min_coverage:
             numTimeSteps += 1
-        numTimeStepsList.append(numTimeSteps)
-    print(round(sum(numTimeStepsList))/len(numTimeStepsList))
+            for robot in [robot_type(room, speed) for element in range(num_robots)]:
+                robot.updatePositionAndClean()
+            totalTimeList.append(numTimeSteps)
+
+    return sum(totalTimeList)/num_trials
 
 
 # Uncomment this line to see how much your simulation takes on average
-print(runSimulation(1, 1.0, 10, 10, 0.75, 30, StandardRobot))
+# print(runSimulation(1, 1.0, 10, 10, 0.75, 30, StandardRobot))
 
 
 # === Problem 5
