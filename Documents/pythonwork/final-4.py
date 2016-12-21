@@ -28,12 +28,12 @@ def makeHistogram(values, numBins, xLabel, yLabel, title=None):
       - If title is provided by caller, puts that title on the figure and otherwise
         does not title the figure
     """
-   pylab.hist(values, bins=numBins)
-   if title:
-       pylab.title(title)
-   pylab.xlabel(xLabel)
-   pylab.ylabel(yLabel)
-   pylab.show()
+#    pylab.hist(values, bins=numBins)
+#    if title:
+#        pylab.title(title)
+#    pylab.xlabel(xLabel)
+#    pylab.ylabel(yLabel)
+#    pylab.show()
    
                     
 # Implement this -- Coding Part 2 of 2
@@ -48,17 +48,21 @@ def getAverage(die, numRolls, numTrials):
       - Choose appropriate labels for the x and y axes.
       - Returns the mean calculated
     """
+    rollList = []
+    countList = {}
     for i in range(numTrials):
+        roll = die.roll()
+        rollList.append(roll)
+
+    countList[i] = countList.get(i, 0) + 1
+
+    # for j in rollList:
+    #     if j in countList:
+    #         countList[j] += 1
+    #     else:
+    #         countList[j] = 1
+    
         
-        for i in range(numRolls):
-            rollList = []
-            roll = random.choice(die)
-            rollList.append(role)
-            try:
-                b = a[4]
-            except IndexError:
-                b = 'sss'
-            
     
 # One test case
-print(getAverage(Die([1,2,3,4,5,6,6,6,7]), 500, 10000))
+print(getAverage(Die([1,2,3,4,5,6,6,6,7]), 5, 10))
