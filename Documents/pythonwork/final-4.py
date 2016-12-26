@@ -51,8 +51,9 @@ def getAverage(die, numRolls, numTrials):
     rollList = []
     countList = {}
     for i in range(numTrials):
-        roll = die.roll()
-        rollList.append(roll)
+        for j in range(numRolls):
+            roll = die.roll()
+            rollList.append(roll)
 
     countList[i] = countList.get(i, 0) + 1
 
