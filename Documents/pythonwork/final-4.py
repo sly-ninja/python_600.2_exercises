@@ -28,12 +28,12 @@ def makeHistogram(values, numBins, xLabel, yLabel, title=None):
       - If title is provided by caller, puts that title on the figure and otherwise
         does not title the figure
     """
-#    pylab.hist(values, bins=numBins)
-#    if title:
-#        pylab.title(title)
-#    pylab.xlabel(xLabel)
-#    pylab.ylabel(yLabel)
-#    pylab.show()
+    pylab.hist(values, bins=numBins)
+    if title:
+        pylab.title(title)
+    pylab.xlabel(xLabel)
+    pylab.ylabel(yLabel)
+    pylab.show()
    
                     
 # Implement this -- Coding Part 2 of 2
@@ -48,22 +48,20 @@ def getAverage(die, numRolls, numTrials):
       - Choose appropriate labels for the x and y axes.
       - Returns the mean calculated
     """
-    rollList = []
-    countList = {}
+    longestRunsList = []
     for i in range(numTrials):
+        countList = {}
         for j in range(numRolls):
             roll = die.roll()
-            rollList.append(roll)
-
-    countList[i] = countList.get(i, 0) + 1
-
-    # for j in rollList:
-    #     if j in countList:
-    #         countList[j] += 1
-    #     else:
-    #         countList[j] = 1
-    
+            if roll in countList:
+                countList[roll] += 1
+            else:
+                countList[roll] = 1
+        maxRun = max(countList, key=lambda key: countList[key])
+        longestRunsList.append(maxRun)
+    makeHistogram(longestRunsList, 10, 'longest run', 'times')
+    return getMeanAndStd(longestRunsList)[0]
         
     
 # One test case
-print(getAverage(Die([1,2,3,4,5,6,6,6,7]), 5, 10))
+print(getAverage(Die([1,2,3,4,5,6,6,6,7]), 10, 1000))
