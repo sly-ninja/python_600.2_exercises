@@ -23,7 +23,7 @@ def rabbitGrowth():
 
     time_step = 0
 
-    while CURRENTRABBITPOP < 10 or time_step == 0
+    while CURRENTRABBITPOP < 10 or time_step == 0:
         time_step += 1
         for i in range(CURRENTRABBITPOP):
             threshold = random.random()
