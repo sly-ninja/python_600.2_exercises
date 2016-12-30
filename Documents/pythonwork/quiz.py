@@ -46,8 +46,25 @@ def greedySum(L, s):
         return: the sum of the multipliers or "no solution" if greedy approach does 
                 not yield a set of multipliers such that the equation sums to 's'
     """
-    
+    total = 0 
+    for l in L:
+        multiplier = s // l
+        value = multiplier * l 
+        if value == s: 
+            return total + multiplier
+        if value < s:
+            total += multiplier  
+            s -= value  
+        else: 
+            return 'no solution'
+    return 'no solution'
 
+greedySum([1], 20) 
+    # 20
+greedySum([10, 5, 1], 14)
+    # 5
+greedySum([10, 9, 8, 1], 20)
+    #2
 
 def max_contig_sum(L):
     """ L, a list of integers, at least one positive
