@@ -51,6 +51,7 @@ def greedySum(L, s):
         multiplier = s // l
         value = multiplier * l 
         if value == s: 
+            print(total + multiplier)
             return total + multiplier
         if value < s:
             total += multiplier  
@@ -69,5 +70,9 @@ greedySum([10, 9, 8, 1], 20)
 def max_contig_sum(L):
     """ L, a list of integers, at least one positive
     Returns the maximum sum of a contiguous subsequence in L """
-    #YOUR CODE HERE
-    pass
+
+    max_ending_here = max_so_far = 0
+    for x in L:
+        max_ending_here = max(0, max_ending_here + x)
+        max_so_far = max(max_so_far, max_ending_here)
+    return max_so_far
