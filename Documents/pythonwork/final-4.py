@@ -59,9 +59,18 @@ def getAverage(die, numRolls, numTrials):
                 countList[roll] = 1
         maxRun = max(countList, key=lambda key: countList[key])
         longestRunsList.append(maxRun)
-    makeHistogram(longestRunsList, 10, 'longest run', 'times')
+    makeHistogram(longestRunsList, 10, 'longest run', 'num of runs')
     return getMeanAndStd(longestRunsList)[0]
-        
+    
+    # def getAverage(die, numRolls, numTrials):
+    #     results = []
+    #     for _ in range(numTrials):
+    #         rolls = [die.roll() for _ in range(numRolls)]
+    #         results.append(max(sum(1 for _ in runs) for x, 
+    #                             runs in itertools.groupby(rolls)))
+    #     makeHistogram(results, 10, 'Max Run Values', '# of runs', 
+    #                 'Max Run of Consecutive Die Rolls Histogram')
+    #     return getMeanAndStd(results)[0]
     
 # One test case
 print(getAverage(Die([1,2,3,4,5,6,6,6,7]), 10, 1000))

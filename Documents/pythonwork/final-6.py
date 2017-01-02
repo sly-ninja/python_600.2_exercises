@@ -14,6 +14,11 @@ def find_combination(choices, total):
     If there is no result that gives the exact total, 
     pick the one that gives sum(result*choices) closest 
     to total without going over.
+
+    For example,
+    If choices = [1,2,2,3] and total = 4 you should return either [0 1 1 0] or [1 0 0 1]
+    If choices = [1,1,3,5,3] and total = 5 you should return [0 0 0 1 0]
+    If choices = [1,1,1,9] and total = 4 you should return [1 1 1 0]
     """
 
     total = sum(x*i)
@@ -22,8 +27,3 @@ def find_combination(choices, total):
     Hint: You might want to use bin() on an int to get a string, get rid of the first two characters, add leading 
     0's as needed, and then convert it to a numpy array of ints. Type help(bin) in the console.
 
-For example,
-
-If choices = [1,2,2,3] and total = 4 you should return either [0 1 1 0] or [1 0 0 1]
-If choices = [1,1,3,5,3] and total = 5 you should return [0 0 0 1 0]
-If choices = [1,1,1,9] and total = 4 you should return [1 1 1 0]
