@@ -54,17 +54,23 @@ def greedy_cow_transport(cows, limit=10):
     transported on a particular trip and the overall list containing all the
     trips
     """
-    cowDictCopy = sorted(cows.items(), key=lambda x: x[1], reverse=True)
-    limit = 10
+    cow_dict_copy = sorted(cows.items(), key=lambda x: x[1], reverse=True)
+
     result = []
-    totalWeight = 0
+    trip_list = []
+    total_weight = 0
 
-    for i in range(len(cowDictCopy)):
-        if (totalWeight + cowDictCopy[i][1] <= limit):
-            result.append(cowDictCopy[i][0])
-            totalWeight += cowDictCopy[i][1]
+    
+    if (total_weight <= limit):
+        for i in cow_dict_copy:
+            trip_list.append(i[0])
+            total_weight += i[1]
+    else:
+        result.append(trip_list)
+        trip_list = 0
+        total_weight = 0
 
-    return result
+    return (result, total_weight)
 
 
 # Problem 2
@@ -117,7 +123,8 @@ lines to print the result of your problem.
 """
 
 cows = load_cows("ps1_cow_data.txt")
-limit=100
+limit=10
+
 print(cows)
 
 print(greedy_cow_transport(cows, limit))
