@@ -55,22 +55,54 @@ def greedy_cow_transport(cows, limit=10):
     trips
     """
     cow_dict_copy = sorted(cows.items(), key=lambda x: x[1], reverse=True)
-
     result = []
-    trip_list = []
     total_weight = 0
+    trip_list = []
+    remaining_cows = []
 
-    
-    if (total_weight <= limit):
-        for i in cow_dict_copy:
-            trip_list.append(i[0])
-            total_weight += i[1]
+        
+#==============================================================================
+#     for i in range (len(cow_dict_copy)):
+#         
+#         if (total_weight <= limit):
+#             if (total_weight + cow_dict_copy[0][1] <= limit):
+#                 trip_list.append(cow_dict_copy[0][0])
+#                 total_weight += cow_dict_copy[0][1]
+#                 print("trip_list:", trip_list, 'total_weight:', total_weight)
+#                 cow_dict_copy = cow_dict_copy[1:]
+#             else: 
+#                 print("trip_list 2:", trip_list, 'total_weight:', total_weight)
+#                 result.append(trip_list)
+#                 trip_list = []
+#                 total_weight = 0
+#             
+#         else:
+#             print("when do you get here?")
+#             result.append(trip_list)
+#             print("result", result)
+#             trip_list = []
+#             total_weight = 0
+#             
+#     return (result)
+#==============================================================================
+
+    while cow_dict_copy[0] != cow_dict_copy[-1]:
+        if (total_weight <= limit):
+            if (total_weight + cow_dict_copy[0][1] <= limit):
+                trip_list.append(cow_dict_copy[0][0])
+                total_weight += cow_dict_copy[0][1]
+                cow_dict_copy = cow_dict_copy[1:]
+
+            else:
+                result.append(trip_list)
+                trip_list = []
+                total_weight = 0
+            
     else:
+        trip_list.append(cow_dict_copy[0][0])
         result.append(trip_list)
-        trip_list = 0
-        total_weight = 0
-
-    return (result, total_weight)
+             
+    return (result)
 
 
 # Problem 2
@@ -123,9 +155,9 @@ lines to print the result of your problem.
 """
 
 cows = load_cows("ps1_cow_data.txt")
-limit=10
+limit=9
 
-print(cows)
+#print(cows)
 
 print(greedy_cow_transport(cows, limit))
 print(brute_force_cow_transport(cows, limit))
