@@ -58,7 +58,6 @@ def greedy_cow_transport(cows, limit=10):
     result = []
     total_weight = 0
     trip_list = []
-    remaining_cows = []
 
         
 #==============================================================================
@@ -106,7 +105,7 @@ def greedy_cow_transport(cows, limit=10):
 
 
 # Problem 2
-def brute_force_cow_transport(cows,limit=10):
+def brute_force_cow_transport(cows, limit=10):
     """
     Finds the allocation of cows that minimizes the number of spaceship trips
     via brute force.  The brute force algorithm should follow the following method:
@@ -127,7 +126,71 @@ def brute_force_cow_transport(cows,limit=10):
     trips
     """
     # TODO: Your code here
-    pass
+    cow_dict_copy = sorted(cows.items(), key=lambda x: x[1], reverse=True)
+        
+
+    def trip_list_creator(cow_dict_copy, limit):
+        total_weight = 0
+        remaining_weight = limit - total_weight
+        result = []
+        trip_list = []
+        
+        if cow_dict_copy == [] or limit == 0:
+#            print('if', total_weight)
+            return trip_list
+            
+        elif cow_dict_copy[0][1] > remaining_weight:
+#            print('elif', cow_dict_copy[0], remaining_weight, total_weight)
+            trip_list = trip_list_creator(cow_dict_copy[1:], remaining_weight)
+            
+        else:
+#            print('else', total_weight)
+#            limit -= cow_dict_copy[0][1]
+            with_cow = trip_list_creator(cow_dict_copy[1:], remaining_weight - cow_dict_copy[0][1])
+            with_cow.append(cow_dict_copy[0][0])
+            total_weight = total_weight + cow_dict_copy[0][1]
+            
+            without_cow = trip_list_creator(cow_dict_copy[1:], remaining_weight)
+#            print('with_cow', with_cow, 'without_cow', with_cow, with_cow > without_cow)
+            
+            if with_cow > without_cow:
+                trip_list = with_cow
+
+            else:
+                trip_list = without_cow
+        
+        return trip_list          
+    
+    for partition in get_partitions(cow_dict_copy):
+        trip_list_creator(cow_dict_copy, limit)
+    
+#==============================================================================
+#     if to_analyze == [] or limit == 0:
+#         print('did you get to if 1?')
+#         
+#         
+#     elif to_analyze[0][1] > (limit - total_weight):
+#         print('did you get to if 2?')
+#         to_analyze = to_analyze[1:]
+#         brute_force_cow_transport(to_analyze, limit)
+#         
+#     else:
+#         print('did you get to else?')
+#         limit -= to_analyze[0][1]
+#         total_weight = total_weight + to_analyze[0][1]
+#         
+#         if total_weight > limit:
+#             print('did you get to sub-if?')
+#             trip_list.append(to_analyze[0][0])
+#             to_analyze = to_analyze[1:]
+#             brute_force_cow_transport(to_analyze, limit)
+#             
+#         else:
+#             print('did you get to sub-else?')
+#             return trip_list
+#     
+#     return trip_list 
+#==============================================================================
 
         
 # Problem 3
@@ -143,9 +206,21 @@ def compare_cow_transport_algorithms():
 
     Returns:
     Does not return anything.
-    """
-    # TODO: Your code here
-    pass
+    """    
+    
+    start_time = time.time()
+    greedy = greedy_cow_transport(cows, limit=10)
+    elapsed_time = time.time() - start_time
+    print('number of trips:', len(greedy))    
+    print('elapsed time:', (elapsed_time))
+    
+#==============================================================================
+#     start_time = time.time()
+#     brute = brute_force_cow_transport(cows, limit=10)
+#     elapsed_time = time.time() - start_time
+#     print('number of trips:', len(brute))    
+#     print('elapsed time:', (elapsed_time))
+#==============================================================================
 
 
 """
@@ -159,7 +234,10 @@ limit=9
 
 #print(cows)
 
-print(greedy_cow_transport(cows, limit))
-print(brute_force_cow_transport(cows, limit))
+#compare_cow_transport_algorithms()
 
+#print(greedy_cow_transport(cows, limit=10))
+#print(brute_force_cow_transport(cows, limit=10))
+
+#brute_force_cow_transport(cows, limit=10)
 
