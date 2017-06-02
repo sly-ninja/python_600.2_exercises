@@ -126,71 +126,79 @@ def brute_force_cow_transport(cows, limit=10):
     trips
     """
     # TODO: Your code here
-    cow_dict_copy = sorted(cows.items(), key=lambda x: x[1], reverse=True)
-        
-
-    def trip_list_creator(cow_dict_copy, limit):
-        total_weight = 0
-        remaining_weight = limit - total_weight
-        result = []
-        trip_list = []
-        
-        if cow_dict_copy == [] or limit == 0:
-#            print('if', total_weight)
-            return trip_list
-            
-        elif cow_dict_copy[0][1] > remaining_weight:
-#            print('elif', cow_dict_copy[0], remaining_weight, total_weight)
-            trip_list = trip_list_creator(cow_dict_copy[1:], remaining_weight)
-            
-        else:
-#            print('else', total_weight)
-#            limit -= cow_dict_copy[0][1]
-            with_cow = trip_list_creator(cow_dict_copy[1:], remaining_weight - cow_dict_copy[0][1])
-            with_cow.append(cow_dict_copy[0][0])
-            total_weight = total_weight + cow_dict_copy[0][1]
-            
-            without_cow = trip_list_creator(cow_dict_copy[1:], remaining_weight)
-#            print('with_cow', with_cow, 'without_cow', with_cow, with_cow > without_cow)
-            
-            if with_cow > without_cow:
-                trip_list = with_cow
-
-            else:
-                trip_list = without_cow
-        
-        return trip_list          
+      
+#==============================================================================
+#     def number_of_trips(total_trips):
+#             
+#         if all(sum([cows[i] for i in trip]) <= limit for trip in total_trips):
+#             return len(total_trips)
+#     
+#     
+#     for partition in get_partitions(cows.items()):
+#         trip_count = number_of_trips(partition)
+#         print(trip_count)
+#     
+#==============================================================================
     
-    for partition in get_partitions(cow_dict_copy):
-        trip_list_creator(cow_dict_copy, limit)
+    shortest = None
+
+    for combo in get_partitions(cows):
+        #if no trip in combo exceeds weight limit
+        if all(sum([cows[i] for i in trip]) <= limit for trip in combo):
+            #if no shortest, or fewer trips in combo than in shortest
+            if shortest == None or (len(combo) < len(shortest)):
+                shortest = combo        
+
+    return shortest
     
 #==============================================================================
-#     if to_analyze == [] or limit == 0:
-#         print('did you get to if 1?')
+#     for partition in get_partitions(cows.items()):
+#         flattened_list = [y for x in partition for y in x]
+#         for i in flattened_list:
+#             cow_weights = 0
+#             cow_weights += [flattened_list[i][1]]
+#             if cow_weights > limit:
+#                 return 0      
+#             print(len(partition), cow_weights)
+#             return cow_weights
+#==============================================================================
+        
+
+#==============================================================================
+#     def trip_list_creator(cow_dict_copy, limit):
+#         total_weight = 0
+#         remaining_weight = limit - total_weight
+#         result = []
+#         trip_list = []
 #         
-#         
-#     elif to_analyze[0][1] > (limit - total_weight):
-#         print('did you get to if 2?')
-#         to_analyze = to_analyze[1:]
-#         brute_force_cow_transport(to_analyze, limit)
-#         
-#     else:
-#         print('did you get to else?')
-#         limit -= to_analyze[0][1]
-#         total_weight = total_weight + to_analyze[0][1]
-#         
-#         if total_weight > limit:
-#             print('did you get to sub-if?')
-#             trip_list.append(to_analyze[0][0])
-#             to_analyze = to_analyze[1:]
-#             brute_force_cow_transport(to_analyze, limit)
+#         if cow_dict_copy == [] or limit == 0:
+# #            print('if', total_weight)
+#             return trip_list
+#             
+#         elif cow_dict_copy[0][1] > remaining_weight:
+# #            print('elif', cow_dict_copy[0], remaining_weight, total_weight)
+#             trip_list = trip_list_creator(cow_dict_copy[1:], remaining_weight)
 #             
 #         else:
-#             print('did you get to sub-else?')
-#             return trip_list
+# #            print('else', total_weight)
+# #            limit -= cow_dict_copy[0][1]
+#             with_cow = trip_list_creator(cow_dict_copy[1:], remaining_weight - cow_dict_copy[0][1])
+#             with_cow.append(cow_dict_copy[0][0])
+#             total_weight = total_weight + cow_dict_copy[0][1]
+#             
+#             without_cow = trip_list_creator(cow_dict_copy[1:], remaining_weight)
+# #            print('with_cow', with_cow, 'without_cow', with_cow, with_cow > without_cow)
+#             
+#             if with_cow > without_cow:
+#                 trip_list = with_cow
+# 
+#             else:
+#                 trip_list = without_cow
+#         
+#         return trip_list          
 #     
-#     return trip_list 
 #==============================================================================
+
 
         
 # Problem 3
@@ -208,11 +216,18 @@ def compare_cow_transport_algorithms():
     Does not return anything.
     """    
     
-    start_time = time.time()
-    greedy = greedy_cow_transport(cows, limit=10)
-    elapsed_time = time.time() - start_time
-    print('number of trips:', len(greedy))    
-    print('elapsed time:', (elapsed_time))
+    def timecall(fn, *args, **kwargs):
+        "Call function with args and kwargs; return the time in seconds and result"
+        t0 = time.clock()
+        result = len(fn(*args, **kwargs))
+        t1 = time.clock()
+        return result, t1-t0    
+    
+    print("Greedy Algorithm: {}".format(timecall(greedy_cow_transport, cows, limit)))
+    print("brute_force Algorithm: {}".format(timecall(brute_force_cow_transport, cows, limit)))
+
+
+
     
 #==============================================================================
 #     start_time = time.time()
@@ -234,7 +249,7 @@ limit=9
 
 #print(cows)
 
-#compare_cow_transport_algorithms()
+compare_cow_transport_algorithms()
 
 #print(greedy_cow_transport(cows, limit=10))
 #print(brute_force_cow_transport(cows, limit=10))
