@@ -236,7 +236,7 @@ class StandardRobot(Robot):
             self.direction = random.randrange(0, 360)        
 
 # Uncomment this line to see your implementation of StandardRobot in action!
-testRobotMovement(StandardRobot, RectangularRoom)
+#testRobotMovement(StandardRobot, RectangularRoom)
 
 
 # === Problem 4
@@ -272,7 +272,7 @@ def runSimulation(num_robots, speed, width, height, min_coverage, num_trials,
 
 
 # Uncomment this line to see how much your simulation takes on average
-# print(runSimulation(1, 1.0, 10, 10, 0.75, 30, StandardRobot))
+print(runSimulation(1, 1.0, 10, 10, 0.75, 30, StandardRobot))
 
 
 # === Problem 5
