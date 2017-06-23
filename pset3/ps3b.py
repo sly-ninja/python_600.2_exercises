@@ -467,8 +467,8 @@ def simulationWithDrug(numViruses, maxPop, maxBirthProb, clearProb, resistances,
         avg_population = [sum(population[step]) / numTrials for step in range(300)]
         avg_r_population = [sum(r_population[step]) / numTrials for step in range(300)]
         
-    pylab.plot(range(150), avg_population, 'b--')
-    pylab.plot(range(150), avg_r_population, 'r--')
+    pylab.plot(range(300), avg_population, 'b--')
+    pylab.plot(range(300), avg_r_population, 'r--')
     pylab.show()
 
 simulationWithDrug(100, 1000, .1, .05, {'guttagonol': False}, .005, 300)
