@@ -1,10 +1,10 @@
 import random
-import pylab
+#import pylab
 
 # Global Variables
-MAXRABBITPOP = 1000
-CURRENTRABBITPOP = 500
-CURRENTFOXPOP = 30
+max_rabbit_pop = 1000
+current_rabbit_pop = 500
+current_fox_pop = 30
 
 def rabbitGrowth():
     """ 
@@ -19,18 +19,12 @@ def rabbitGrowth():
     Nothing is returned.
     """
     # you need this line for modifying global variables
-    global CURRENTRABBITPOP
+    global current_rabbit_pop
 
-    time_step = 0
+    for rabbit in range(current_rabbit_pop):
+        if (1 - (current_rabbit_pop/max_rabbit_pop)) > random.random():
+            current_rabbit_pop += 1
 
-    while CURRENTRABBITPOP < 10 or time_step == 0:
-        time_step += 1
-        for i in range(CURRENTRABBITPOP):
-            threshold = random.random()
-            prob_rabbit_growth = 1 - (CURRENTRABBITPOP/MAXRABBITPOP)
-
-            if prob_rabbit_growth > threshold:
-                CURRENTRABBITPOP += 1
             
 def foxGrowth():
     """ 
@@ -49,21 +43,17 @@ def foxGrowth():
     Nothing is returned.
     """
     # you need these lines for modifying global variables
-    global CURRENTRABBITPOP
-    global CURRENTFOXPOP 
+    global current_rabbit_pop
+    global current_fox_pop 
 
-    for fox in range(CURRENTFOXPOP):
-        threshold = random.random()
-        prob_fox_eats = (CURRENTRABBITPOP/MAXRABBITPOP)
-        if prob_fox_eats >= threshold and CURRENTRABBITPOP > 10:
-            CURRENTRABBITPOP -= 1
-            threshold = random.random()
-            if 1/3 >= threshold:
-                CURRENTFOXPOP += 1
+    for fox in range(current_fox_pop):
+        if (current_rabbit_pop/max_rabbit_pop) >= random.random() and current_rabbit_pop > 10:
+            current_rabbit_pop -= 1
+            if 1/3 >= random.random():
+                current_fox_pop += 1
         else:
-            threshold = random.random()
-            if 9/10 >= threshold and CURRENTFOXPOP > 10:
-                CURRENTFOXPOP -= 1    
+            if 1/10 >= random.random() and current_fox_pop > 10:
+                current_fox_pop -= 1    
             
 def runSimulation(numSteps):
     """
@@ -83,8 +73,9 @@ def runSimulation(numSteps):
     for steps in range(numSteps):
         rabbitGrowth()
         foxGrowth()
-        rabbit_populations.append(CURRENTRABBITPOP)
-        fox_populations.append(CURRENTFOXPOP)
+        rabbit_populations.append(current_rabbit_pop)
+        fox_populations.append(current_fox_pop)
     
     return (rabbit_populations, fox_populations)
 
+print(runSimulation(12))
