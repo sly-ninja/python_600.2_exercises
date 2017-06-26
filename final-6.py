@@ -39,7 +39,7 @@ def find_combination(choices, total):
                 second.append(i)
                 previous_sum = current_sum
             
-    return (min(test, key=sum) if test else second)
+    return (min(test, key=sum) if test else max(second))
 
 
 #def find_combination(choices, total):
